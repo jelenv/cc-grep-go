@@ -1,4 +1,5 @@
 #!/bin/sh
+# usage: ./run.sh --test, echo "input" | ./run.sh -E "i"
 
 set -e
 
