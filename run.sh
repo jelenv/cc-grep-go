@@ -1,24 +1,18 @@
 #!/bin/sh
-#
-# Use this script to run your program LOCALLY.
-#
-# Note: Changing this script WILL NOT affect how CodeCrafters runs your program.
-#
-# Learn more: https://codecrafters.io/program-interface
 
-set -e # Exit early if any commands fail
+set -e
 
-# Copied from .codecrafters/compile.sh
-#
-# - Edit this to change how your program compiles locally
-# - Edit .codecrafters/compile.sh to change how your program compiles remotely
+# compile
 (
-  cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
-  go build -o /tmp/codecrafters-build-grep-go cmd/mygrep/main.go
+  cd "$(dirname "$0")"
+  go build -o build/mygrep cmd/mygrep/main.go
 )
 
-# Copied from .codecrafters/run.sh
-#
-# - Edit this to change how your program runs locally
-# - Edit .codecrafters/run.sh to change how your program runs remotely
-exec /tmp/codecrafters-build-grep-go "$@"
+# test or run
+if [ "$1" = "--test" ]; then
+  shift
+  go test cmd/mygrep/main_test.go "$@"
+else
+  # Run the mygrep program with provided arguments
+  exec build/mygrep "$@"
+fi
