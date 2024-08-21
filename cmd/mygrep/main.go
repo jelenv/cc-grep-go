@@ -8,7 +8,7 @@ import (
 	"unicode/utf8"
 )
 
-// Usage: echo <input_text> | your_program.sh -E <pattern>
+// Usage: echo <input_text> | mygrep -E <pattern>
 func main() {
 	if len(os.Args) < 3 || os.Args[1] != "-E" {
 		fmt.Fprintf(os.Stderr, "usage: mygrep -E <pattern>\n")
@@ -32,18 +32,20 @@ func main() {
 	if !ok {
 		os.Exit(1)
 	}
-
-	// default exit code is 0 which means success
 }
 
 func matchLine(line []byte, pattern string) (bool, error) {
-	if utf8.RuneCountInString(pattern) != 1 {
+	if utf8.RuneCountInString(pattern) == 0 {
 		return false, fmt.Errorf("unsupported pattern: %q", pattern)
 	}
 
-	ok := bytes.ContainsAny(line, pattern)
+	result := false
+	if pattern == "\\d" {
+		result = bytes.ContainsAny(line, "0123456789")
+	} else {
+		result = bytes.ContainsAny(line, pattern)
+	}
 
-	fmt.Println("Matched: ", ok)
-
-	return ok, nil
+	fmt.Println("Matched: ", result)
+	return result, nil
 }
