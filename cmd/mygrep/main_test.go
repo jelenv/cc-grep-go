@@ -12,15 +12,18 @@ func TestGrep(t *testing.T) {
 		pattern      string
 		expectedExit int
 	}{
-		// Match a literal character
+		// 1. Match a literal character
 		{"apple", "a", 0},
 		{"apple", "b", 1},
-		// Match digits
+		// 2. Match digits
 		{"apple123", "\\d", 0},
 		{"apple", "\\d", 1},
-		// Match alphanumeric characters
+		// 3. Match alphanumeric characters
 		{"alpha-num3ric", "\\w", 0},
 		{"$!?", "\\w", 1},
+		// 4. Positive character groups
+		{"apple", "[aeiou]", 0},
+		{"apple", "[xyz]", 1},
 	}
 
 	for _, tt := range tests {
