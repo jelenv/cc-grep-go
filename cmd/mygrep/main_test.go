@@ -15,6 +15,7 @@ func TestGrep(t *testing.T) {
 		{"apple", "a", 0},
 		{"apple", "b", 1},
 		{"apple123", "\\d", 0},
+		{"$!?", "\\w", 1},
 	}
 
 	for _, tt := range tests {
