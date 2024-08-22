@@ -44,6 +44,9 @@ func matchLine(line []byte, pattern string) (bool, error) {
 		result = bytes.ContainsAny(line, "0123456789")
 	} else if pattern == "\\w" {
 		result = bytes.ContainsAny(line, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_")
+	} else if bytes.HasPrefix([]byte(pattern), []byte("[^")) && bytes.HasSuffix([]byte(pattern), []byte("]")) {
+		negativeCharGroup := pattern[2 : len(pattern)-1]
+		result = !bytes.ContainsAny(line, negativeCharGroup)
 	} else if bytes.HasPrefix([]byte(pattern), []byte("[")) && bytes.HasSuffix([]byte(pattern), []byte("]")) {
 		positiveCharGroup := pattern[1 : len(pattern)-1]
 		result = bytes.ContainsAny(line, positiveCharGroup)
