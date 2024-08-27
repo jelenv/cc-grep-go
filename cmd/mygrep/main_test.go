@@ -27,6 +27,9 @@ func TestGrep(t *testing.T) {
 		// 5. Negative character groups
 		{"apple", "[^xyz]", 0},
 		{"apple", "[^aeiou]", 1},
+		// 6. Combine character groups
+		{"1 apple", "\\d apple", 0},
+		{"\\d \\w\\w\\ws", "1 cat", 1},
 	}
 
 	for _, tt := range tests {
