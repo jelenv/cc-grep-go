@@ -165,8 +165,13 @@ func match(regexp string, inputText []byte) (bool, error) {
 
 		match := true
 		for i := 0; i < len(re); i++ {
-			fmt.Println("Token: ", re[i].String(), "Input: ", string(inputText[start+i]), "Match: ", matchToken(re[i], rune(inputText[start+i])))
+			// if start+i < len(inputText) {
+			// 	fmt.Println("Token: ", re[i].String(), "Input: ", string(inputText[start+i]), "Match: ", matchToken(re[i], rune(inputText[start+i])))
+			// } else {
+			// 	fmt.Println("Token: ", re[i].String(), "Input: ", "EOF", "Match: ", false)
+			// }
 			if start+i >= len(inputText) || !matchToken(re[i], rune(inputText[start+i])) {
+
 				// if negative char group did not match, then return immediately
 				if re[i].Type == CharGroup && re[i].Negated {
 					fmt.Println("Matched: ", false)

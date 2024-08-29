@@ -29,7 +29,7 @@ func TestGrep(t *testing.T) {
 		{"apple", "[^aeiou]", 1},
 		// 6. Combine character groups
 		{"1 apple", "\\d apple", 0},
-		{"\\d \\w\\w\\ws", "1 cat", 1},
+		{"sally has 1 dog", "\\d \\w\\w\\ws", 1},
 		// 7. Start of string anchor
 		{"log", "^log", 0},
 		{"clog", "^log", 1},
