@@ -41,6 +41,7 @@ const (
 	Digit
 	Word
 	CharGroup
+	StartOfLine
 )
 
 type RegExp struct {
@@ -67,6 +68,8 @@ func (r RegExp) String() string {
 			negated = "^"
 		}
 		return fmt.Sprintf("[%s%s]", negated, string(r.CharArr))
+	case StartOfLine:
+		return "^"
 	}
 	return ""
 }
@@ -83,7 +86,9 @@ func convertPattern(regexp string) ([]RegExp, error) {
 	var re []RegExp
 
 	for i := 0; i < len(regexp); i++ {
-		if regexp[i] == '\\' {
+		if i == 0 && regexp[i] == '^' {
+			re = append(re, RegExp{Type: StartOfLine})
+		} else if regexp[i] == '\\' {
 			i++
 			if i < len(regexp) {
 				switch regexp[i] {
@@ -134,8 +139,7 @@ func matchToken(token RegExp, inputChar rune) bool {
 }
 
 func match(regexp string, inputText []byte) (bool, error) {
-	result := false
-
+	var result bool
 	re, err := convertPattern(regexp)
 	if err != nil {
 		return false, err
@@ -149,10 +153,19 @@ func match(regexp string, inputText []byte) (bool, error) {
 
 	printRegExpArray(re)
 
+	startOfLine := len(re) > 0 && re[0].Type == StartOfLine
+	if startOfLine {
+		re = re[1:]
+	}
+
 	for start := 0; start < len(inputText); start++ {
+		if startOfLine && start > 0 {
+			break
+		}
+
 		match := true
 		for i := 0; i < len(re); i++ {
-			// fmt.Println("Token: ", re[i].String(), "Input: ", string(inputText[start+i]), "Match: ", matchToken(re[i], rune(inputText[start+i])))
+			fmt.Println("Token: ", re[i].String(), "Input: ", string(inputText[start+i]), "Match: ", matchToken(re[i], rune(inputText[start+i])))
 			if start+i >= len(inputText) || !matchToken(re[i], rune(inputText[start+i])) {
 				// if negative char group did not match, then return immediately
 				if re[i].Type == CharGroup && re[i].Negated {

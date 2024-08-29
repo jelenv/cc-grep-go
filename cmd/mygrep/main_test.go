@@ -30,6 +30,9 @@ func TestGrep(t *testing.T) {
 		// 6. Combine character groups
 		{"1 apple", "\\d apple", 0},
 		{"\\d \\w\\w\\ws", "1 cat", 1},
+		// 7. Start of string anchor
+		{"log", "^log", 0},
+		{"clog", "^log", 1},
 	}
 
 	for _, tt := range tests {
