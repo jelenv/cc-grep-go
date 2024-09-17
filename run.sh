@@ -6,7 +6,7 @@ set -e
 # compile
 (
   cd "$(dirname "$0")"
-  go build -o build/mygrep cmd/mygrep/main.go
+  go build -o build/mygrep ./cmd/mygrep/
 )
 
 # test or run
