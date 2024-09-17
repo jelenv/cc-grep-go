@@ -37,7 +37,7 @@ func TestGrep(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.input+"-"+tt.pattern, func(t *testing.T) {
-			cmd := exec.Command("../../build/mygrep", "-E", tt.pattern)
+			cmd := exec.Command("../build/mygrep", "-E", tt.pattern)
 
 			cmd.Stdin = strings.NewReader(tt.input)
 

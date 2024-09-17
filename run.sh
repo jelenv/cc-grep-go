@@ -12,7 +12,7 @@ set -e
 # test or run
 if [ "$1" = "--test" ]; then
   shift
-  go test cmd/mygrep/main_test.go "$@"
+  go test test/main_test.go "$@"
 else
   # Run the mygrep program with provided arguments
   exec build/mygrep "$@"
