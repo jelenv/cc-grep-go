@@ -42,6 +42,8 @@ func convertPattern(regexp string) ([]RegExp, error) {
 			charGroup := regexp[i+1 : i+end]
 			re = append(re, RegExp{Type: CharGroup, CharArr: []rune(charGroup), Negated: negated})
 			i += end + 1
+		} else if regexp[i] == '.' {
+			re = append(re, RegExp{Type: Wildcard})
 		} else {
 			token := RegExp{Type: Char, Char: rune(regexp[i])}
 			// Look ahead for quantifiers

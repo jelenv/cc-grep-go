@@ -43,6 +43,9 @@ func TestGrep(t *testing.T) {
 		{"dog", "dogs?", 0},
 		{"cat", "ca?t", 0},
 		{"cat", "dog?", 1},
+		// 11. Wildcard
+		{"dog", "d.g", 0},
+		{"cog", "d.g", 1},
 	}
 
 	for _, tt := range tests {

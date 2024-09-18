@@ -122,6 +122,8 @@ func matchToken(token RegExp, inputChar rune) bool {
 		return strings.ContainsRune(string(token.CharArr), inputChar) != token.Negated
 	case Plus, QuestionMark:
 		return inputChar == token.Char
+	case Wildcard:
+		return inputChar != '\n'
 	}
 	return false
 }

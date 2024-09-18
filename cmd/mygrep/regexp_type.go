@@ -13,6 +13,7 @@ const (
 	EndOfLine
 	Plus
 	QuestionMark
+	Wildcard
 )
 
 type RegExp struct {
@@ -47,6 +48,8 @@ func (r RegExp) String() string {
 		return fmt.Sprintf("%c+", r.Char)
 	case QuestionMark:
 		return fmt.Sprintf("%c?", r.Char)
+	case Wildcard:
+		return "."
 	}
 	return ""
 }
