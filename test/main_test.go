@@ -33,6 +33,9 @@ func TestGrep(t *testing.T) {
 		// 7. Start of string anchor
 		{"log", "^log", 0},
 		{"clog", "^log", 1},
+		// 8. End of string anchor
+		{"loglog", "log$", 0},
+		{"logs", "log$", 1},
 	}
 
 	for _, tt := range tests {

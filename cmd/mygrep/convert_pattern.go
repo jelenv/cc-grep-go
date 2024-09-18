@@ -11,6 +11,8 @@ func convertPattern(regexp string) ([]RegExp, error) {
 	for i := 0; i < len(regexp); i++ {
 		if i == 0 && regexp[i] == '^' {
 			re = append(re, RegExp{Type: StartOfLine})
+		} else if i == len(regexp)-1 && regexp[i] == '$' {
+			re = append(re, RegExp{Type: EndOfLine})
 		} else if regexp[i] == '\\' {
 			i++
 			if i < len(regexp) {

@@ -50,8 +50,13 @@ func match(regexp string, inputText []byte) (bool, error) {
 	printRegExpArray(re)
 
 	startOfLine := len(re) > 0 && re[0].Type == StartOfLine
+	endOfLine := len(re) > 0 && re[len(re)-1].Type == EndOfLine
+
 	if startOfLine {
 		re = re[1:]
+	}
+	if endOfLine {
+		re = re[:len(re)-1]
 	}
 
 	for start := 0; start < len(inputText); start++ {
@@ -67,7 +72,6 @@ func match(regexp string, inputText []byte) (bool, error) {
 			// 	fmt.Println("Token: ", re[i].String(), "Input: ", "EOF", "Match: ", false)
 			// }
 			if start+i >= len(inputText) || !matchToken(re[i], rune(inputText[start+i])) {
-
 				// if negative char group did not match, then return immediately
 				if re[i].Type == CharGroup && re[i].Negated {
 					fmt.Println("Matched: ", false)
@@ -77,6 +81,12 @@ func match(regexp string, inputText []byte) (bool, error) {
 				break
 			}
 		}
+
+		// Check if we need to match end of line
+		if match && endOfLine && start+len(re) != len(inputText) {
+			match = false
+		}
+
 		if match {
 			result = true
 			break

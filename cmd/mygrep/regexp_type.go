@@ -10,6 +10,7 @@ const (
 	Word
 	CharGroup
 	StartOfLine
+	EndOfLine
 )
 
 type RegExp struct {
@@ -38,6 +39,8 @@ func (r RegExp) String() string {
 		return fmt.Sprintf("[%s%s]", negated, string(r.CharArr))
 	case StartOfLine:
 		return "^"
+	case EndOfLine:
+		return "$"
 	}
 	return ""
 }
