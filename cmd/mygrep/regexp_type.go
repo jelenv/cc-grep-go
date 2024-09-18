@@ -11,6 +11,7 @@ const (
 	CharGroup
 	StartOfLine
 	EndOfLine
+	Plus
 )
 
 type RegExp struct {
@@ -41,6 +42,8 @@ func (r RegExp) String() string {
 		return "^"
 	case EndOfLine:
 		return "$"
+	case Plus:
+		return fmt.Sprintf("%c+", r.Char)
 	}
 	return ""
 }

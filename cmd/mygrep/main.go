@@ -28,6 +28,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(2)
 	}
+	fmt.Println("Matched: ", ok)
 
 	if !ok {
 		os.Exit(1)
@@ -65,24 +66,32 @@ func match(regexp string, inputText []byte) (bool, error) {
 		}
 
 		match := true
+		inputPos := start
 		for i := 0; i < len(re); i++ {
-			// if start+i < len(inputText) {
-			// 	fmt.Println("Token: ", re[i].String(), "Input: ", string(inputText[start+i]), "Match: ", matchToken(re[i], rune(inputText[start+i])))
-			// } else {
-			// 	fmt.Println("Token: ", re[i].String(), "Input: ", "EOF", "Match: ", false)
-			// }
-			if start+i >= len(inputText) || !matchToken(re[i], rune(inputText[start+i])) {
-				// if negative char group did not match, then return immediately
-				if re[i].Type == CharGroup && re[i].Negated {
-					fmt.Println("Matched: ", false)
-					return false, nil
+			token := re[i]
+
+			if token.Type == Plus {
+				if inputPos >= len(inputText) || !matchToken(token, rune(inputText[inputPos])) {
+					match = false
+					break
 				}
-				match = false
-				break
+				for inputPos < len(inputText) && matchToken(token, rune(inputText[inputPos])) {
+					inputPos++
+				}
+			} else {
+				if inputPos >= len(inputText) || !matchToken(token, rune(inputText[inputPos])) {
+					// if negative char group did not match, then return immediately
+					if token.Type == CharGroup && token.Negated {
+						return false, nil
+					}
+					match = false
+					break
+				}
+				inputPos++
 			}
 		}
 
-		// Check if we need to match end of line
+		// check if we need to match end of line
 		if match && endOfLine && start+len(re) != len(inputText) {
 			match = false
 		}
@@ -93,7 +102,6 @@ func match(regexp string, inputText []byte) (bool, error) {
 		}
 	}
 
-	fmt.Println("Matched: ", result)
 	return result, nil
 }
 
@@ -107,6 +115,8 @@ func matchToken(token RegExp, inputChar rune) bool {
 		return unicode.IsLetter(inputChar) || unicode.IsDigit(inputChar) || inputChar == '_'
 	case CharGroup:
 		return strings.ContainsRune(string(token.CharArr), inputChar) != token.Negated
+	case Plus:
+		return inputChar == token.Char
 	}
 	return false
 }

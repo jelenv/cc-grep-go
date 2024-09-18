@@ -43,7 +43,14 @@ func convertPattern(regexp string) ([]RegExp, error) {
 			re = append(re, RegExp{Type: CharGroup, CharArr: []rune(charGroup), Negated: negated})
 			i += end + 1
 		} else {
-			re = append(re, RegExp{Type: Char, Char: rune(regexp[i])})
+			token := RegExp{Type: Char, Char: rune(regexp[i])}
+			// Look ahead for quantifiers
+			if i+1 < len(regexp) && regexp[i+1] == '+' {
+				token = RegExp{Type: Plus, Char: rune(regexp[i])}
+				i++
+			}
+			re = append(re, token)
+
 		}
 	}
 	return re, nil

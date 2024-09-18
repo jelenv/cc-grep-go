@@ -36,6 +36,9 @@ func TestGrep(t *testing.T) {
 		// 8. End of string anchor
 		{"loglog", "log$", 0},
 		{"logs", "log$", 1},
+		// 9. Plus quantifier (1 or more)
+		{"caats", "ca+ts", 0},
+		{"log", "a+", 1},
 	}
 
 	for _, tt := range tests {
