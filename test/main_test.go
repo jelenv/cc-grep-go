@@ -39,6 +39,9 @@ func TestGrep(t *testing.T) {
 		// 9. Plus quantifier (1 or more)
 		{"caats", "ca+ts", 0},
 		{"log", "a+", 1},
+		// 10. Question mark (0 or 1)
+		{"dog", "dogs?", 0},
+		{"cat", "dog?", 1},
 	}
 
 	for _, tt := range tests {

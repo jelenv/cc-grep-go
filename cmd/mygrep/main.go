@@ -78,6 +78,11 @@ func match(regexp string, inputText []byte) (bool, error) {
 				for inputPos < len(inputText) && matchToken(token, rune(inputText[inputPos])) {
 					inputPos++
 				}
+			} else if token.Type == QuestionMark {
+				if inputPos < len(inputText) && matchToken(token, rune(inputText[inputPos])) {
+					inputPos++
+				}
+				// continue without breaking even if the token doesn't match
 			} else {
 				if inputPos >= len(inputText) || !matchToken(token, rune(inputText[inputPos])) {
 					// if negative char group did not match, then return immediately

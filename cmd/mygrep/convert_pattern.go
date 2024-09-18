@@ -49,8 +49,11 @@ func convertPattern(regexp string) ([]RegExp, error) {
 				token = RegExp{Type: Plus, Char: rune(regexp[i])}
 				i++
 			}
+			if i+1 < len(regexp) && regexp[i+1] == '?' {
+				token = RegExp{Type: QuestionMark, Char: rune(regexp[i])}
+				i++
+			}
 			re = append(re, token)
-
 		}
 	}
 	return re, nil
