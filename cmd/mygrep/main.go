@@ -120,7 +120,7 @@ func matchToken(token RegExp, inputChar rune) bool {
 		return unicode.IsLetter(inputChar) || unicode.IsDigit(inputChar) || inputChar == '_'
 	case CharGroup:
 		return strings.ContainsRune(string(token.CharArr), inputChar) != token.Negated
-	case Plus:
+	case Plus, QuestionMark:
 		return inputChar == token.Char
 	}
 	return false

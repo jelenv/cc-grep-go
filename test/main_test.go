@@ -41,6 +41,7 @@ func TestGrep(t *testing.T) {
 		{"log", "a+", 1},
 		// 10. Question mark (0 or 1)
 		{"dog", "dogs?", 0},
+		{"cat", "ca?t", 0},
 		{"cat", "dog?", 1},
 	}
 
